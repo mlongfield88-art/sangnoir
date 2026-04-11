@@ -21,6 +21,7 @@
   --max-width: 1200px;
   --section-pad: 120px 0;
   --transition: 0.3s ease;
+  --service-nav-height: 48px;
 }
 
 /* --- Reset --- */
@@ -297,6 +298,19 @@ p + p { margin-top: 1em; }
   margin: 0 auto;
 }
 
+.page-hero__credential {
+  display: inline-block;
+  margin-top: 32px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--steel);
+  padding-top: 16px;
+  border-top: 1px solid rgba(160, 163, 181, 0.12);
+}
+
 /* --- Sections --- */
 .section {
   padding: var(--section-pad);
@@ -468,33 +482,75 @@ p + p { margin-top: 1em; }
   margin-right: auto;
 }
 
-/* --- Services --- */
-.service-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
+/* --- Service Sections (video-backed) --- */
+.services-stack {
+  position: relative;
+}
+
+.service-section {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
   align-items: center;
-  padding: 80px 0;
+  overflow: hidden;
 }
 
-.service-block:not(:last-child) {
-  border-bottom: 1px solid rgba(160, 163, 181, 0.06);
+.service-section:last-of-type {
+  border-bottom: none;
 }
 
-.service-block--reverse {
-  direction: rtl;
+.service-section__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transform: scale(1.02);
 }
 
-.service-block--reverse > * {
-  direction: ltr;
+.service-section__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(13, 15, 26, 0.82) 0%,
+    rgba(27, 30, 52, 0.65) 50%,
+    rgba(13, 15, 26, 0.55) 100%
+  );
+  pointer-events: none;
 }
 
-.service-block__content h3 {
+.service-section .container {
+  position: relative;
+  z-index: 2;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.service-section__content {
+  max-width: 640px;
+}
+
+.service-section__number {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--signal-blue);
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.service-section__content h3 {
   font-size: clamp(1.4rem, 2.5vw, 2rem);
   margin-bottom: 8px;
 }
 
-.service-block__content .service-quote {
+.service-section__content .service-quote {
   font-family: var(--font-serif);
   font-size: 1.05rem;
   font-style: italic;
@@ -503,21 +559,21 @@ p + p { margin-top: 1em; }
   opacity: 0.9;
 }
 
-.service-block__content p {
+.service-section__content p {
   margin-bottom: 12px;
 }
 
-.service-block__content ul {
+.service-section__content ul {
   margin-top: 20px;
 }
 
-.service-block__content ul li {
+.service-section__content ul li {
   padding: 8px 0 8px 20px;
   position: relative;
   font-size: 0.95rem;
 }
 
-.service-block__content ul li::before {
+.service-section__content ul li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -527,239 +583,83 @@ p + p { margin-top: 1em; }
   background: var(--signal-blue);
 }
 
-.service-block__visual {
-  aspect-ratio: 4/3;
-  background: linear-gradient(135deg, var(--slate) 0%, var(--steel) 100%);
-  border: 1px solid rgba(160, 163, 181, 0.06);
+/* --- Service Section — Right-aligned variant --- */
+.service-section--right .service-section__content {
+  margin-left: auto;
+}
+
+.service-section__overlay--right {
+  background: linear-gradient(
+    225deg,
+    rgba(13, 15, 26, 0.82) 0%,
+    rgba(27, 30, 52, 0.65) 50%,
+    rgba(13, 15, 26, 0.55) 100%
+  ) !important;
+}
+
+/* --- Service Sub-Navigation --- */
+.service-nav {
+  position: relative;
+  width: 100%;
+  z-index: 999;
+  background: rgba(13, 15, 26, 0.92);
+  border-bottom: 1px solid rgba(160, 163, 181, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.service-nav.is-sticky {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  box-shadow: 0 1px 0 rgba(160, 163, 181, 0.08);
+}
+
+.service-nav__track {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 48px;
+  height: var(--service-nav-height);
   position: relative;
-  overflow: hidden;
 }
 
-.service-block__visual--img {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.service-nav__link {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--silver);
+  text-decoration: none;
+  padding: 14px 0;
+  transition: color 0.3s ease;
 }
 
-.service-block__visual--img::after {
-  content: '';
+.service-nav__link:hover,
+.service-nav__link.is-active {
+  color: var(--white);
+}
+
+.service-nav__indicator {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(13,15,26,0.3) 0%, rgba(27,30,52,0.2) 100%);
+  bottom: 0;
+  height: 2px;
+  background: var(--signal-blue);
+  transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.service-block__visual::before {
-  content: '';
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(160, 163, 181, 0.02) 10px,
-    rgba(160, 163, 181, 0.02) 11px
-  );
-}
-
-.service-block__visual--img::before {
+.service-nav-spacer {
+  height: var(--service-nav-height);
   display: none;
 }
 
-.service-block__visual svg {
-  width: 64px;
-  height: 64px;
-  stroke: var(--signal-blue);
-  opacity: 0.4;
-  position: relative;
-  z-index: 1;
-}
-
-/* --- Interactive Car Door Animation --- */
-.car-door-scene {
-  aspect-ratio: 4/3;
-  position: relative;
-  perspective: 1500px;
-  overflow: hidden;
-  background: var(--midnight);
-  border: 1px solid rgba(160, 163, 181, 0.06);
-}
-
-.car-door-interior {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(150deg, #08090f 0%, #0e1020 40%, #0a0c17 100%);
-}
-
-.car-door-interior__glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 35% 55%, rgba(6, 147, 227, 0.06) 0%, transparent 55%);
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.car-door-interior__ambient {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(6, 147, 227, 0.3), transparent);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-.car-door-interior__seat {
-  position: absolute;
-  left: 12%;
-  top: 18%;
-  width: 42%;
-  height: 64%;
-  background: linear-gradient(175deg, rgba(20, 22, 38, 0.9) 0%, rgba(30, 33, 50, 0.6) 40%, rgba(20, 22, 38, 0.8) 100%);
-  border-radius: 12px 12px 6px 6px;
-  border: 1px solid rgba(160, 163, 181, 0.03);
-  opacity: 0;
-  transition: opacity 0.8s ease 0.2s;
-}
-
-.car-door-interior__seat::before {
-  content: '';
-  position: absolute;
-  top: 8%;
-  left: 10%;
-  right: 10%;
-  height: 35%;
-  background: linear-gradient(180deg, rgba(44, 47, 69, 0.3) 0%, rgba(27, 30, 52, 0.2) 100%);
-  border-radius: 8px 8px 4px 4px;
-  border: 1px solid rgba(160, 163, 181, 0.03);
-}
-
-.car-door-scene.active .car-door-interior__glow {
-  opacity: 1;
-}
-
-.car-door-scene.active .car-door-interior__ambient {
-  opacity: 1;
-}
-
-.car-door-scene.active .car-door-interior__seat {
-  opacity: 1;
-}
-
-.car-door-panel {
-  position: absolute;
-  inset: 0;
-  transform-origin: right center;
-  transform: rotateY(0deg);
-  z-index: 2;
-  will-change: transform;
-  backface-visibility: hidden;
-  background: linear-gradient(165deg,
-    #161828 0%,
-    #1e2038 20%,
-    #1a1c30 40%,
-    #1f2139 60%,
-    #1a1c30 80%,
-    #161828 100%
-  );
-  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.car-door-panel__reflection {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg,
-    transparent 0%,
-    transparent 35%,
-    rgba(255, 255, 255, 0.02) 42%,
-    rgba(255, 255, 255, 0.04) 48%,
-    rgba(255, 255, 255, 0.02) 54%,
-    transparent 60%,
-    transparent 100%
-  );
-  transition: background-position 0.3s ease;
-}
-
-.car-door-panel__bodyline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 45%;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(160,163,181,0.04), rgba(160,163,181,0.08), rgba(160,163,181,0.04));
-}
-
-.car-door-panel__handle {
-  position: absolute;
-  right: 18%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.car-door-panel__handle-bar {
-  width: 64px;
-  height: 6px;
-  background: linear-gradient(180deg, #4a4d65 0%, #2a2d42 40%, #3a3d55 60%, #2a2d42 100%);
-  border-radius: 3px;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  position: relative;
-}
-
-.car-door-panel__handle-bar::after {
-  content: '';
-  position: absolute;
-  top: 1px;
-  left: 4px;
-  right: 4px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-}
-
-.car-door-panel__handle-recess {
-  width: 72px;
-  height: 14px;
-  margin-top: -4px;
-  background: rgba(10, 12, 20, 0.6);
-  border-radius: 2px;
-  border: 1px solid rgba(160, 163, 181, 0.04);
-}
-
-.car-door-panel__edge {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 3px;
-  background: linear-gradient(180deg,
-    rgba(160, 163, 181, 0.02) 0%,
-    rgba(160, 163, 181, 0.06) 50%,
-    rgba(160, 163, 181, 0.02) 100%
-  );
-}
-
-.car-door-label {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--steel);
-  opacity: 0.6;
-  transition: opacity 0.4s ease;
-  z-index: 3;
-  white-space: nowrap;
-}
-
-.car-door-scene.active .car-door-label {
-  opacity: 0;
+.service-nav-spacer.is-active {
+  display: block;
 }
 
 /* --- Who We Are --- */
@@ -1333,16 +1233,47 @@ p + p { margin-top: 1em; }
   background: var(--signal-blue);
 }
 
+/* --- Lenis Smooth Scroll --- */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* --- Motion Design --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .service-section {
+    height: auto;
+    min-height: 70vh;
+  }
+  .service-nav {
+    position: sticky;
+    top: var(--nav-height);
+  }
+  .service-nav__indicator {
+    transition: none;
+  }
+}
+
 /* --- Scroll Reveal --- */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.visible {
+.reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* --- Responsive --- */
@@ -1359,17 +1290,8 @@ p + p { margin-top: 1em; }
     gap: 48px;
   }
 
-  .service-block {
-    grid-template-columns: 1fr;
+  .service-nav__track {
     gap: 32px;
-  }
-
-  .service-block--reverse {
-    direction: ltr;
-  }
-
-  .service-block__visual {
-    max-height: 300px;
   }
 
   .values-grid {
@@ -1403,6 +1325,47 @@ p + p { margin-top: 1em; }
 @media (max-width: 768px) {
   :root {
     --section-pad: 80px 0;
+  }
+
+  .service-section {
+    height: auto;
+    min-height: auto;
+  }
+
+  .service-section .container {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .service-nav__track {
+    gap: 20px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .service-nav__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .service-nav__link {
+    font-size: 0.72rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .service-section__overlay,
+  .service-section__overlay--right {
+    background: linear-gradient(
+      180deg,
+      rgba(13, 15, 26, 0.88) 0%,
+      rgba(27, 30, 52, 0.78) 100%
+    ) !important;
+  }
+
+  .service-section--right .service-section__content {
+    margin-left: 0;
   }
 
   .nav {
