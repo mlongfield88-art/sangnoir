@@ -538,6 +538,19 @@ p + p { margin-top: 1em; }
   overflow: hidden;
 }
 
+.service-block__visual--img {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.service-block__visual--img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(13,15,26,0.3) 0%, rgba(27,30,52,0.2) 100%);
+}
+
 .service-block__visual::before {
   content: '';
   position: absolute;
@@ -552,6 +565,10 @@ p + p { margin-top: 1em; }
   );
 }
 
+.service-block__visual--img::before {
+  display: none;
+}
+
 .service-block__visual svg {
   width: 64px;
   height: 64px;
@@ -559,6 +576,190 @@ p + p { margin-top: 1em; }
   opacity: 0.4;
   position: relative;
   z-index: 1;
+}
+
+/* --- Interactive Car Door Animation --- */
+.car-door-scene {
+  aspect-ratio: 4/3;
+  position: relative;
+  perspective: 1500px;
+  overflow: hidden;
+  background: var(--midnight);
+  border: 1px solid rgba(160, 163, 181, 0.06);
+}
+
+.car-door-interior {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, #08090f 0%, #0e1020 40%, #0a0c17 100%);
+}
+
+.car-door-interior__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 35% 55%, rgba(6, 147, 227, 0.06) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.car-door-interior__ambient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(6, 147, 227, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.car-door-interior__seat {
+  position: absolute;
+  left: 12%;
+  top: 18%;
+  width: 42%;
+  height: 64%;
+  background: linear-gradient(175deg, rgba(20, 22, 38, 0.9) 0%, rgba(30, 33, 50, 0.6) 40%, rgba(20, 22, 38, 0.8) 100%);
+  border-radius: 12px 12px 6px 6px;
+  border: 1px solid rgba(160, 163, 181, 0.03);
+  opacity: 0;
+  transition: opacity 0.8s ease 0.2s;
+}
+
+.car-door-interior__seat::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 10%;
+  right: 10%;
+  height: 35%;
+  background: linear-gradient(180deg, rgba(44, 47, 69, 0.3) 0%, rgba(27, 30, 52, 0.2) 100%);
+  border-radius: 8px 8px 4px 4px;
+  border: 1px solid rgba(160, 163, 181, 0.03);
+}
+
+.car-door-scene.active .car-door-interior__glow {
+  opacity: 1;
+}
+
+.car-door-scene.active .car-door-interior__ambient {
+  opacity: 1;
+}
+
+.car-door-scene.active .car-door-interior__seat {
+  opacity: 1;
+}
+
+.car-door-panel {
+  position: absolute;
+  inset: 0;
+  transform-origin: right center;
+  transform: rotateY(0deg);
+  z-index: 2;
+  will-change: transform;
+  backface-visibility: hidden;
+  background: linear-gradient(165deg,
+    #161828 0%,
+    #1e2038 20%,
+    #1a1c30 40%,
+    #1f2139 60%,
+    #1a1c30 80%,
+    #161828 100%
+  );
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.car-door-panel__reflection {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.02) 42%,
+    rgba(255, 255, 255, 0.04) 48%,
+    rgba(255, 255, 255, 0.02) 54%,
+    transparent 60%,
+    transparent 100%
+  );
+  transition: background-position 0.3s ease;
+}
+
+.car-door-panel__bodyline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 45%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(160,163,181,0.04), rgba(160,163,181,0.08), rgba(160,163,181,0.04));
+}
+
+.car-door-panel__handle {
+  position: absolute;
+  right: 18%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.car-door-panel__handle-bar {
+  width: 64px;
+  height: 6px;
+  background: linear-gradient(180deg, #4a4d65 0%, #2a2d42 40%, #3a3d55 60%, #2a2d42 100%);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.car-door-panel__handle-bar::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  right: 4px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+
+.car-door-panel__handle-recess {
+  width: 72px;
+  height: 14px;
+  margin-top: -4px;
+  background: rgba(10, 12, 20, 0.6);
+  border-radius: 2px;
+  border: 1px solid rgba(160, 163, 181, 0.04);
+}
+
+.car-door-panel__edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: linear-gradient(180deg,
+    rgba(160, 163, 181, 0.02) 0%,
+    rgba(160, 163, 181, 0.06) 50%,
+    rgba(160, 163, 181, 0.02) 100%
+  );
+}
+
+.car-door-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--steel);
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.car-door-scene.active .car-door-label {
+  opacity: 0;
 }
 
 /* --- Who We Are --- */

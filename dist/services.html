@@ -60,11 +60,23 @@
             <li>Event and travel security planning</li>
           </ul>
         </div>
-        <div class="service-block__visual" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M24 4L4 14v16c0 10 20 14 20 14s20-4 20-14V14L24 4z"/>
-            <path d="M16 24l6 6 10-12"/>
-          </svg>
+        <!-- Interactive Car Door -->
+        <div class="car-door-scene" aria-hidden="true">
+          <div class="car-door-interior">
+            <div class="car-door-interior__glow"></div>
+            <div class="car-door-interior__ambient"></div>
+            <div class="car-door-interior__seat"></div>
+          </div>
+          <div class="car-door-panel">
+            <div class="car-door-panel__reflection"></div>
+            <div class="car-door-panel__bodyline"></div>
+            <div class="car-door-panel__edge"></div>
+            <div class="car-door-panel__handle">
+              <div class="car-door-panel__handle-bar"></div>
+              <div class="car-door-panel__handle-recess"></div>
+            </div>
+          </div>
+          <span class="car-door-label">Scroll to open</span>
         </div>
       </div>
 
@@ -82,11 +94,7 @@
             <li>Threat assessment for diplomatic missions</li>
           </ul>
         </div>
-        <div class="service-block__visual" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="24" cy="24" r="18"/>
-            <path d="M4 24h40M24 6c-6 6-9 12-9 18s3 12 9 18c6-6 9-12 9-18s-3-12-9-18z"/>
-          </svg>
+        <div class="service-block__visual service-block__visual--img" style="background-image: url('/img/diplomatic.jpg');" role="img" aria-label="Grand neoclassical building at night">
         </div>
       </div>
 
@@ -104,8 +112,8 @@
             <li>Crisis management planning and response</li>
           </ul>
         </div>
-        <div class="service-block__visual" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <div class="service-block__visual service-block__visual--img" style="background-image: url('/img/cityscape.jpg');" role="img" aria-label="Aerial cityscape at night">
+          <svg style="display:none;" viewBox="0 0 48 48" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <rect x="6" y="10" width="36" height="28" rx="2"/>
             <path d="M6 18h36M16 26h6M16 32h10"/>
           </svg>

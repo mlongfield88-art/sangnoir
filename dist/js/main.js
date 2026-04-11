@@ -112,6 +112,60 @@
     });
   }
 
+  // --- Interactive car door animation ---
+  var doorScene = document.querySelector('.car-door-scene');
+  var doorPanel = document.querySelector('.car-door-panel');
+
+  if (doorScene && doorPanel) {
+    var doorActive = false;
+
+    var doorObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            doorActive = true;
+          } else {
+            doorActive = false;
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+
+    doorObserver.observe(doorScene);
+
+    window.addEventListener('scroll', function () {
+      if (!doorActive) return;
+
+      var rect = doorScene.getBoundingClientRect();
+      var viewH = window.innerHeight;
+
+      // Progress: 0 when element enters bottom, 1 when it passes top
+      var progress = (viewH - rect.top) / (viewH + rect.height);
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Map progress 0.2–0.7 to door rotation 0–78deg
+      var doorProgress = Math.max(0, Math.min(1, (progress - 0.2) / 0.5));
+
+      // Ease-out curve for smooth door swing
+      var eased = 1 - Math.pow(1 - doorProgress, 3);
+      var rotation = eased * 78;
+
+      doorPanel.style.transform = 'rotateY(' + rotation + 'deg)';
+
+      // Activate interior elements when door starts opening
+      if (doorProgress > 0.05) {
+        doorScene.classList.add('active');
+      } else {
+        doorScene.classList.remove('active');
+      }
+
+      // Dynamic shadow on the door
+      var shadowIntensity = eased * 0.6;
+      doorPanel.style.boxShadow = '-' + (2 + eased * 15) + 'px 0 ' + (20 + eased * 30) + 'px rgba(0,0,0,' + shadowIntensity + ')';
+    }, { passive: true });
+  }
+
   // --- Newsletter form (front-end only) ---
   var newsletterForms = document.querySelectorAll('.footer__newsletter-form');
   newsletterForms.forEach(function (form) {
