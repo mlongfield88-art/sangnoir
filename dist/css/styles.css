@@ -296,6 +296,12 @@ p + p { margin-top: 1em; }
   padding: 180px 0 100px;
   text-align: center;
   background: linear-gradient(180deg, var(--midnight) 0%, var(--deep-navy) 100%);
+  overflow: hidden;
+}
+
+.page-hero .container {
+  position: relative;
+  z-index: 1;
 }
 
 .page-hero::after {
