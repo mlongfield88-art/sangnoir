@@ -54,7 +54,9 @@
     hamburger.addEventListener('click', function () {
       hamburger.classList.toggle('open');
       navLinks.classList.toggle('open');
-      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+      var isOpen = navLinks.classList.contains('open');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+      hamburger.setAttribute('aria-expanded', isOpen);
     });
     navLinks.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {

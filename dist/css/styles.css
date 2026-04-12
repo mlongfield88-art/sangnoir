@@ -1291,6 +1291,16 @@ html.lenis, html.lenis body {
   }
 }
 
+/* --- Focus Styles --- */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 1px solid var(--signal-blue);
+  outline-offset: 2px;
+}
+
 /* --- Scroll Reveal --- */
 .reveal {
   opacity: 0;
