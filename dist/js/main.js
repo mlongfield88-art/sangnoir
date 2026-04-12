@@ -239,22 +239,6 @@
       });
     }
 
-    // --- Nav click handlers ---
-    navLinkEls.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-        var targetId = link.getAttribute('href');
-        var targetEl = document.querySelector(targetId);
-        if (targetEl) {
-          if (lenis) {
-            lenis.scrollTo(targetEl, { offset: -totalOffset });
-          } else {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-      });
-    });
-
     // --- Indicator positioning ---
     function updateIndicator(activeIndex) {
       var activeLink = navLinkEls[activeIndex];
@@ -277,92 +261,105 @@
 
     // --- Branch: mobile vs desktop ---
     if (isMobile) {
-      initMobileServiceNav(sections, updateIndicator);
+      initMobileServiceNav(sections, updateIndicator, navLinkEls, totalOffset);
     } else {
-      initCardStack(sections, updateIndicator, totalOffset);
+      initTabbedServices(sections, updateIndicator, navLinkEls, totalOffset);
     }
   }
 
-  function initCardStack(sections, updateIndicator, totalOffset) {
-    var totalSections = sections.length;
+  function initTabbedServices(sections, updateIndicator, navLinkEls, totalOffset) {
+    var stack = document.querySelector('.services-stack');
+    stack.classList.add('services-stack--tabbed');
+    var currentIndex = 0;
 
-    // CSS sticky stacking — no JS pins, fully smooth scroll
+    // Set first section active
+    sections[0].classList.add('is-active-tab');
+
+    // Prepare text reveals for all sections
     sections.forEach(function (section, i) {
-      section.style.position = 'sticky';
-      section.style.top = totalOffset + 'px';
-      section.style.zIndex = i + 1;
-    });
-
-    // Fade out each section as the next one scrolls over it
-    for (var i = 0; i < totalSections - 1; i++) {
-      (function (index) {
-        gsap.to(sections[index], {
-          scale: 0.96,
-          opacity: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sections[index + 1],
-            start: 'top bottom',
-            end: 'top top+=' + totalOffset,
-            scrub: true
-          }
-        });
-      })(i);
-    }
-
-    // Nav indicator scroll-spy
-    sections.forEach(function (section, i) {
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top+=' + (totalOffset + 200),
-        end: 'bottom top+=' + (totalOffset + 200),
-        onEnter: function () { updateIndicator(i); },
-        onEnterBack: function () { updateIndicator(i); }
-      });
-    });
-
-    // Text reveals
-    sections.forEach(function (section) {
       var contentItems = section.querySelectorAll(
         '.service-section__content .service-section__number, .service-section__content h3, .service-section__content .service-quote, .service-section__content p, .service-section__content ul'
       );
-
       contentItems.forEach(function (item, j) {
         item.classList.add('reveal');
         item.style.transitionDelay = (j * 0.08) + 's';
       });
-
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top 70%',
-        onEnter: function () {
+      // Show first section reveals immediately
+      if (i === 0) {
+        requestAnimationFrame(function () {
           contentItems.forEach(function (item) { item.classList.add('is-visible'); });
+        });
+      }
+    });
+
+    // Play first video
+    var firstVideo = sections[0].querySelector('.service-section__bg');
+    if (firstVideo) firstVideo.play().catch(function () {});
+
+    // Tab switch
+    function switchTab(newIndex) {
+      if (newIndex === currentIndex) return;
+
+      var oldVideo = sections[currentIndex].querySelector('.service-section__bg');
+      if (oldVideo) oldVideo.pause();
+
+      sections[currentIndex].classList.remove('is-active-tab');
+      sections[newIndex].classList.add('is-active-tab');
+
+      var newVideo = sections[newIndex].querySelector('.service-section__bg');
+      if (newVideo) newVideo.play().catch(function () {});
+
+      // Reset and retrigger text reveals for the new tab
+      var contentItems = sections[newIndex].querySelectorAll('.reveal');
+      contentItems.forEach(function (item) {
+        item.classList.remove('is-visible');
+      });
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          contentItems.forEach(function (item) { item.classList.add('is-visible'); });
+        });
+      });
+
+      currentIndex = newIndex;
+      updateIndicator(newIndex);
+    }
+
+    // Nav click handlers — switch tabs, no scrolling
+    navLinkEls.forEach(function (link, i) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        switchTab(i);
+        // Scroll the services section into view if not visible
+        var stackTop = stack.getBoundingClientRect().top;
+        if (stackTop < 0 || stackTop > window.innerHeight * 0.5) {
+          if (lenis) {
+            lenis.scrollTo(stack, { offset: -totalOffset });
+          } else {
+            stack.scrollIntoView({ behavior: 'smooth' });
+          }
         }
       });
     });
-
-    // Video play/pause
-    sections.forEach(function (section) {
-      var video = section.querySelector('.service-section__bg');
-      if (!video) return;
-
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top bottom',
-        end: 'bottom top',
-        onEnter: function () { video.play().catch(function () {}); },
-        onLeave: function () { video.pause(); },
-        onEnterBack: function () { video.play().catch(function () {}); },
-        onLeaveBack: function () { video.pause(); }
-      });
-    });
-
-    ScrollTrigger.refresh();
-    document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 
-  function initMobileServiceNav(sections, updateIndicator) {
+  function initMobileServiceNav(sections, updateIndicator, navLinkEls, totalOffset) {
     if (typeof ScrollTrigger === 'undefined') return;
+
+    // Mobile: scroll-to on nav click
+    navLinkEls.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var targetId = link.getAttribute('href');
+        var targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          if (lenis) {
+            lenis.scrollTo(targetEl, { offset: -totalOffset });
+          } else {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
 
     sections.forEach(function (section, i) {
       ScrollTrigger.create({

@@ -487,6 +487,15 @@ p + p { margin-top: 1em; }
   position: relative;
 }
 
+/* Tabbed panel mode (desktop) */
+.services-stack--tabbed .service-section {
+  display: none;
+}
+
+.services-stack--tabbed .service-section.is-active-tab {
+  display: flex;
+}
+
 .service-section {
   position: relative;
   height: 100vh;
@@ -1325,6 +1334,10 @@ html.lenis, html.lenis body {
 @media (max-width: 768px) {
   :root {
     --section-pad: 80px 0;
+  }
+
+  .services-stack--tabbed .service-section {
+    display: flex;
   }
 
   .service-section {
