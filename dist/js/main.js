@@ -409,6 +409,60 @@
   }
 
   // ──────────────────────────────────────
+  // Animated Counters
+  // ──────────────────────────────────────
+  if (!prefersReducedMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    document.querySelectorAll('[data-counter]').forEach(function (el) {
+      var target = parseInt(el.getAttribute('data-counter'));
+      var suffix = el.getAttribute('data-counter-suffix') || '';
+
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 85%',
+        once: true,
+        onEnter: function () {
+          var obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: 2,
+            ease: 'power2.out',
+            onUpdate: function () {
+              el.textContent = Math.round(obj.val) + suffix;
+            }
+          });
+        }
+      });
+    });
+  }
+
+  // ──────────────────────────────────────
+  // Cursor Parallax on Service Videos
+  // ──────────────────────────────────────
+  if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+    document.querySelectorAll('.service-section').forEach(function (section) {
+      var video = section.querySelector('.service-section__bg');
+      if (!video) return;
+
+      section.addEventListener('mousemove', function (e) {
+        var rect = section.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        gsap.to(video, {
+          x: x * 20,
+          y: y * 10,
+          duration: 1.2,
+          ease: 'power2.out'
+        });
+      });
+
+      section.addEventListener('mouseleave', function () {
+        gsap.to(video, { x: 0, y: 0, duration: 0.8, ease: 'power2.out' });
+      });
+    });
+  }
+
+  // ──────────────────────────────────────
   // Cookie Consent
   // ──────────────────────────────────────
   var cookieBanner = document.querySelector('.cookie-banner');

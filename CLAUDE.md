@@ -33,6 +33,7 @@ Corporate website for Sang Noir Limited, a risk management and security consulta
 | Who We Are | `/who-we-are` | `dist/who-we-are.html` |
 | Services | `/services` | `dist/services.html` |
 | Partners | `/partners` | `dist/partners.html` |
+| Case Studies | `/case-studies` | `dist/case-studies.html` |
 | Contact | `/contact` | `dist/contact.html` |
 | Privacy Policy | `/privacy-policy` | `dist/privacy-policy.html` |
 
@@ -48,7 +49,7 @@ Push to main triggers GitHub Action which deploys dist/ to Cloudflare Pages (san
 - **Domain**: sangnoir.co.uk
 - **Tagline**: "Safeguarding All That Matters to You"
 - **Phone**: +44 7984 386 017
-- **Email**: enquires@sangnoir.co.uk
+- **Email**: enquiries@sangnoir.co.uk
 
 ## UI/UX Design Tools
 - Use **GSAP + ScrollTrigger** for scroll-driven animations and parallax
