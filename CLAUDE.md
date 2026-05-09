@@ -58,6 +58,10 @@ Push to main triggers GitHub Action which deploys dist/ to Cloudflare Pages (san
 - Use **CSS custom properties** for theming and design tokens
 - Use **IntersectionObserver** for scroll-triggered reveals with staggered timing
 
+## Model routing
+
+Inherits from `../CLAUDE.md` (Web Design parent). Default **Sonnet** for build, code, animation, and deploy work. Use **Opus** for group-level brand voice (LX Sixty corporate, ProLuxe agency, Sangnoir corporate, Capsian Invest investor copy) and any client-facing proposal narrative. Use **Haiku** for asset rename, sitemap regeneration, deploy status checks, and simple find-replace.
+
 ## Connected Projects
 - **Part of**: Web Design (LX Sixty Group in-house capability)
 - **Root brain**: `../../CLAUDE.md` (full group structure and cross-connections)
